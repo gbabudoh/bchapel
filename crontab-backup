@@ -1,0 +1,24 @@
+# Battersea Chapel Database Backup Cron Job
+# This file contains the cron job configuration for automated database backups
+# 
+# To install this cron job, run:
+# crontab -e
+# 
+# Then add the following line:
+
+# Daily backup at 2:00 AM
+0 2 * * * /var/www/bchapel3/backup-db.sh
+
+# Alternative schedules (uncomment one if you prefer different timing):
+# 
+# Every 6 hours:
+# 0 */6 * * * /var/www/bchapel3/backup-db.sh
+#
+# Twice daily (2 AM and 2 PM):
+# 0 2,14 * * * /var/www/bchapel3/backup-db.sh
+#
+# Weekly on Sunday at 3 AM:
+# 0 3 * * 0 /var/www/bchapel3/backup-db.sh
+
+# Note: Make sure the script is executable:
+# chmod +x /var/www/bchapel3/backup-db.sh

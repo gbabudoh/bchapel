@@ -1,0 +1,49 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+  --lime-green: #32cd32;
+  --lime-green-dark: #228b22;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-lime: var(--lime-green);
+  --color-lime-dark: var(--lime-green-dark);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
+}
+
+.btn-primary {
+  @apply bg-lime-500 hover:bg-lime-600 text-white px-6 py-3 rounded-lg font-semibold transition-colors duration-200;
+}
+
+.btn-secondary {
+  @apply border-2 border-lime-500 text-lime-500 hover:bg-lime-500 hover:text-white px-6 py-3 rounded-lg font-semibold transition-colors duration-200;
+}
+
+.text-lime {
+  color: var(--lime-green);
+}
+
+.bg-lime {
+  background-color: var(--lime-green);
+}
+
+.border-lime {
+  border-color: var(--lime-green);
+}
+
+.hero-gradient {
+  background: linear-gradient(135deg, rgba(50, 205, 50, 0.1) 0%, rgba(255, 255, 255, 0.9) 100%);
+}

@@ -1,0 +1,40 @@
+{
+  "name": "bchapel3",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint",
+    "reset-admin": "node scripts/reset-admin.js"
+  },
+  "dependencies": {
+    "@hookform/resolvers": "^5.2.2",
+    "autoprefixer": "^10.4.21",
+    "bcryptjs": "^3.0.2",
+    "dotenv": "^17.2.2",
+    "jsonwebtoken": "^9.0.2",
+    "lucide-react": "^0.544.0",
+    "multer": "^2.0.2",
+    "next": "15.5.3",
+    "next-auth": "^4.24.11",
+    "nodemailer": "^6.10.1",
+    "paypal": "^1.0.1",
+    "react": "19.1.0",
+    "react-dom": "19.1.0",
+    "react-hook-form": "^7.63.0",
+    "sharp": "^0.34.4",
+    "sqlit": "^2.0.0",
+    "sqlite": "^5.1.1",
+    "sqlite3": "^5.1.7",
+    "swiper": "^12.0.2",
+    "zod": "^4.1.11"
+  },
+  "devDependencies": {
+    "eslint": "^9",
+    "eslint-config-next": "15.5.3",
+    "postcss": "^8",
+    "tailwindcss": "^3.4.17"
+  }
+}
