@@ -1,12 +1,12 @@
 'use client';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Navigation from '../../../../components/Navigation';
 import Footer from '../../../../components/Footer';
 import { Heart, CheckCircle, Mail, Calendar, ArrowLeft, Share2 } from 'lucide-react';
 import Link from 'next/link';
 
-export default function ThankYouPage() {
+function ThankYouContent() {
   const searchParams = useSearchParams();
   const [donationDetails, setDonationDetails] = useState({
     type: 'one-time',
@@ -62,7 +62,7 @@ export default function ThankYouPage() {
               
               <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
                 Your generous {donationDetails.type === 'recurring' ? 'monthly' : ''} donation of 
-                <span className="font-semibold text-lime-600"> ${donationDetails.amount}</span> has been received. 
+                <span className="font-semibold text-lime-600"> £{donationDetails.amount}</span> has been received. 
                 Your heart for giving blesses our entire community.
               </p>
 
@@ -72,7 +72,7 @@ export default function ThankYouPage() {
                 <div className="space-y-2 text-sm">
                   <div className="flex justify-between">
                     <span className="text-gray-600">Amount:</span>
-                    <span className="font-medium">${donationDetails.amount}</span>
+                    <span className="font-medium">£{donationDetails.amount}</span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-gray-600">Type:</span>
@@ -93,7 +93,7 @@ export default function ThankYouPage() {
                   <Mail className="h-8 w-8 text-lime-600 mx-auto mb-3" />
                   <h4 className="font-semibold text-gray-900 mb-2">Confirmation Email</h4>
                   <p className="text-sm text-gray-600">
-                    You'll receive a confirmation email from PayPal for your records
+                    You&apos;ll receive a confirmation email from PayPal for your records
                   </p>
                 </div>
                 
@@ -190,9 +190,9 @@ export default function ThankYouPage() {
       <div className="py-16 bg-gray-50">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <blockquote className="text-xl italic text-gray-700 mb-6">
-            "Give, and it will be given to you. A good measure, pressed down, shaken together 
+            &ldquo;Give, and it will be given to you. A good measure, pressed down, shaken together 
             and running over, will be poured into your lap. For with the measure you use, 
-            it will be measured to you."
+            it will be measured to you.&rdquo;
           </blockquote>
           <cite className="text-lime-600 font-semibold">Luke 6:38</cite>
         </div>
@@ -200,5 +200,13 @@ export default function ThankYouPage() {
 
       <Footer />
     </div>
+  );
+}
+
+export default function ThankYouPage() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <ThankYouContent />
+    </Suspense>
   );
 }

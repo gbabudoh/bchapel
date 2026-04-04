@@ -105,8 +105,8 @@ export default function ImageGallery({ images = [], category = 'all', autoplay =
               >
                 <div className="aspect-square">
                   <img
-                    src={image.file_path}
-                    alt={image.alt_text || image.title}
+                    src={image.filePath}
+                    alt={image.altText || image.title}
                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
                   />
                 </div>
@@ -145,14 +145,14 @@ export default function ImageGallery({ images = [], category = 'all', autoplay =
             {/* Action Buttons */}
             <div className="absolute top-4 left-4 z-10 flex space-x-2">
               <button
-                onClick={() => downloadImage(selectedImage.file_path, selectedImage.original_name)}
+                onClick={() => downloadImage(selectedImage.filePath, selectedImage.originalName)}
                 className="bg-white bg-opacity-20 hover:bg-opacity-30 text-white p-2 rounded-full transition-all duration-200"
                 title="Download"
               >
                 <Download size={20} />
               </button>
               <button
-                onClick={() => shareImage(selectedImage.file_path, selectedImage.title)}
+                onClick={() => shareImage(selectedImage.filePath, selectedImage.title)}
                 className="bg-white bg-opacity-20 hover:bg-opacity-30 text-white p-2 rounded-full transition-all duration-200"
                 title="Share"
               >
@@ -174,8 +174,8 @@ export default function ImageGallery({ images = [], category = 'all', autoplay =
                 <SwiperSlide key={image.id}>
                   <div className="flex items-center justify-center h-full">
                     <img
-                      src={image.file_path}
-                      alt={image.alt_text || image.title}
+                      src={image.filePath}
+                      alt={image.altText || image.title}
                       className="max-w-full max-h-full object-contain"
                     />
                   </div>
@@ -207,8 +207,8 @@ export default function ImageGallery({ images = [], category = 'all', autoplay =
                     <SwiperSlide key={`thumb-${image.id}`}>
                       <div className="aspect-square cursor-pointer opacity-60 hover:opacity-100 transition-opacity duration-200">
                         <img
-                          src={image.file_path}
-                          alt={image.alt_text || image.title}
+                          src={image.filePath}
+                          alt={image.altText || image.title}
                           className="w-full h-full object-cover rounded"
                         />
                       </div>
@@ -222,8 +222,8 @@ export default function ImageGallery({ images = [], category = 'all', autoplay =
             {selectedImage.title && (
               <div className="absolute bottom-20 left-4 right-4 text-center">
                 <h3 className="text-white text-xl font-semibold mb-2">{selectedImage.title}</h3>
-                {selectedImage.alt_text && (
-                  <p className="text-gray-300 text-sm">{selectedImage.alt_text}</p>
+                {selectedImage.altText && (
+                  <p className="text-gray-300 text-sm">{selectedImage.altText}</p>
                 )}
               </div>
             )}

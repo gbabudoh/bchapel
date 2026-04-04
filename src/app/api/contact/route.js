@@ -1,14 +1,14 @@
 import { NextResponse } from 'next/server';
-import { openDb } from '../../../../lib/database';
+import prisma from '../../../../lib/prisma';
 
 export async function GET() {
   try {
-    const db = await openDb();
-    const contact = await db.all(
-      'SELECT * FROM contact_info ORDER BY type, id'
-    );
+    const contact = await prisma.contactInfo.findMany({
+      orderBy: [{ type: 'asc' }, { id: 'asc' }]
+    });
     return NextResponse.json(contact);
   } catch (error) {
+    console.error('Failed to fetch contact information:', error);
     return NextResponse.json(
       { error: 'Failed to fetch contact information' },
       { status: 500 }
@@ -18,16 +18,21 @@ export async function GET() {
 
 export async function POST(request) {
   try {
-    const { type, label, value, icon, is_active } = await request.json();
-    const db = await openDb();
+    const { type, label, value, icon, isActive } = await request.json();
     
-    const result = await db.run(
-      'INSERT INTO contact_info (type, label, value, icon, is_active) VALUES (?, ?, ?, ?, ?)',
-      [type, label, value, icon || null, is_active !== false]
-    );
+    const contactInfo = await prisma.contactInfo.create({
+      data: {
+        type,
+        label,
+        value,
+        icon: icon || null,
+        isActive: isActive !== false
+      }
+    });
 
-    return NextResponse.json({ id: result.lastID, message: 'Contact information created' });
+    return NextResponse.json({ id: contactInfo.id, message: 'Contact information created' });
   } catch (error) {
+    console.error('Failed to create contact information:', error);
     return NextResponse.json(
       { error: 'Failed to create contact information' },
       { status: 500 }

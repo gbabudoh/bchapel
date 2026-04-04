@@ -1,5 +1,6 @@
 'use client';
 import { useState, useEffect } from 'react';
+import Image from 'next/image';
 import { Facebook, Twitter, Instagram, Youtube, Mail, Phone, MapPin } from 'lucide-react';
 
 export default function Footer() {
@@ -15,7 +16,7 @@ export default function Footer() {
       const data = await response.json();
       
       if (Array.isArray(data)) {
-        setFooterItems(data.filter(item => item.is_active));
+        setFooterItems(data.filter(item => item.isActive));
       } else {
         console.error('Error from API:', data.error || 'Unknown error');
         setFooterItems([]);
@@ -51,27 +52,31 @@ export default function Footer() {
 
   // Sort items within each section by order_index
   Object.keys(groupedItems).forEach(section => {
-    groupedItems[section].sort((a, b) => (a.order_index || 0) - (b.order_index || 0));
+    groupedItems[section].sort((a, b) => (a.orderIndex || 0) - (b.orderIndex || 0));
   });
 
   return (
     <footer className="bg-gray-900 text-white">
       <div className="max-w-6xl mx-auto px-8 py-20">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-16">
+        <div className="grid grid-cols-1 md:grid-cols-[1fr_1fr_1fr] gap-12 md:gap-x-16 md:gap-y-20">
           
           {/* Battersea Chapel Section */}
           <div className="flex flex-col items-center text-center">
             <div className="flex items-center mb-8">
-              <div className="w-12 h-12 bg-gradient-to-br from-lime-400 to-lime-600 rounded-full flex items-center justify-center shadow-lg">
-                <span className="text-white font-bold text-xl">BC</span>
-              </div>
+              <Image
+                src="/logo.png"
+                alt="Battersea Chapel Logo"
+                width={48}
+                height={48}
+                className="w-12 h-12 object-contain"
+              />
               <div className="ml-3">
                 <h2 className="text-2xl font-bold text-white">Battersea Chapel</h2>
                 <p className="text-lime-400 text-sm font-medium">Faith • Community • Hope</p>
               </div>
             </div>
             
-            <p className="text-gray-300 mb-8 leading-relaxed max-w-xs">
+            <p className="text-gray-300 mb-8 leading-relaxed max-w-xs text-left">
               A place where faith meets community, and hearts find their home in Christ. 
               Join us as we grow together in love, service, and spiritual understanding.
             </p>
@@ -80,11 +85,11 @@ export default function Footer() {
             {groupedItems.contact && (
               <div className="space-y-4 w-full">
                 {groupedItems.contact.map((item) => (
-                  <div key={item.id} className="flex items-start justify-center">
+                  <div key={item.id} className="flex items-start justify-start">
                     <div className="flex-shrink-0 w-5 h-5 mt-0.5 text-lime-400">
                       {getIcon(item.icon)}
                     </div>
-                    <div className="ml-3 text-center">
+                    <div className="ml-3 text-left">
                       {item.url ? (
                         <a
                           href={item.url}
@@ -110,22 +115,22 @@ export default function Footer() {
             )}
           </div>
 
-          {/* Links Section - Centered */}
+          {/* Links Section - Middle */}
           <div className="flex flex-col items-center text-center">
-            <h3 className="text-2xl font-bold mb-8 text-lime-400">
+            <h3 className="text-2xl font-bold mb-10 text-lime-400">
               Links
             </h3>
             
-            <div className="space-y-6 w-full">
+            <div className="space-y-8 w-fit text-left">
               {/* Navigation Links */}
               {groupedItems.links && (
                 <div>
-                  <ul className="space-y-4">
+                  <ul className="space-y-5">
                     {groupedItems.links.map((item) => (
                       <li key={item.id}>
                         <a
                           href={item.url}
-                          className="text-gray-300 hover:text-lime-400 transition-colors duration-200 flex items-center justify-center text-lg"
+                          className="text-gray-300 hover:text-lime-400 transition-colors duration-200 flex items-center justify-start text-lg"
                         >
                           {item.icon && (
                             <span className="mr-3">{getIcon(item.icon)}</span>
@@ -147,7 +152,7 @@ export default function Footer() {
                         {item.url ? (
                           <a
                             href={item.url}
-                            className="text-gray-300 hover:text-lime-400 transition-colors duration-200 flex items-center justify-center text-lg"
+                            className="text-gray-300 hover:text-lime-400 transition-colors duration-200 flex items-center justify-start text-lg"
                           >
                             {item.icon && (
                               <span className="mr-3">{getIcon(item.icon)}</span>
@@ -155,11 +160,11 @@ export default function Footer() {
                             {item.title}
                           </a>
                         ) : (
-                          <div className="text-gray-300 flex items-center justify-center">
+                          <div className="text-gray-300 flex items-center justify-start">
                             {item.icon && (
                               <span className="mr-3">{getIcon(item.icon)}</span>
                             )}
-                            <div className="text-center">
+                            <div className="text-left">
                               <div className="font-medium text-lg">{item.title}</div>
                               {item.content && (
                                 <div className="text-sm text-gray-400 mt-1">{item.content}</div>
@@ -175,20 +180,20 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* Social Media Section */}
+          {/* Social Media Section - Far Right */}
           <div className="flex flex-col items-center text-center">
-            <h3 className="text-2xl font-bold mb-8 text-lime-400">
+            <h3 className="text-2xl font-bold mb-10 text-lime-400">
               Social
             </h3>
 
             {/* Social Media Links */}
             {groupedItems.social && (
-              <div className="space-y-4 w-full">
+              <div className="space-y-5 w-fit text-left">
                 {groupedItems.social.map((item) => (
                   <a
                     key={item.id}
                     href={item.url}
-                    className="text-gray-300 hover:text-lime-400 transition-colors duration-200 flex items-center justify-center text-lg"
+                    className="text-gray-300 hover:text-lime-400 transition-colors duration-200 flex items-center justify-start text-lg"
                     target="_blank"
                     rel="noopener noreferrer"
                   >

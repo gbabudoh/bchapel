@@ -1,0 +1,225 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Admin {
+  id        Int      @id @default(autoincrement())
+  username  String   @unique
+  email     String   @unique
+  password  String
+  role      String   @default("admin")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@map("admins")
+}
+
+model Navigation {
+  id         Int      @id @default(autoincrement())
+  title      String
+  url        String
+  orderIndex Int      @default(0) @map("order_index")
+  isActive   Boolean  @default(true) @map("is_active")
+  createdAt  DateTime @default(now()) @map("created_at")
+
+  @@map("navigation")
+}
+
+model Banner {
+  id         Int      @id @default(autoincrement())
+  title      String
+  subtitle   String?
+  imageUrl   String?  @map("image_url")
+  buttonText String?  @map("button_text")
+  buttonUrl  String?  @map("button_url")
+  orderIndex Int      @default(0) @map("order_index")
+  isActive   Boolean  @default(true) @map("is_active")
+  createdAt  DateTime @default(now()) @map("created_at")
+
+  @@map("banners")
+}
+
+model HomepageContent {
+  id         Int      @id @default(autoincrement())
+  section    String
+  title      String
+  content    String?  @db.Text
+  imageUrl   String?  @map("image_url")
+  buttonText String?  @map("button_text")
+  buttonUrl  String?  @map("button_url")
+  orderIndex Int      @default(0) @map("order_index")
+  isActive   Boolean  @default(true) @map("is_active")
+  createdAt  DateTime @default(now()) @map("created_at")
+
+  @@map("homepage_content")
+}
+
+
+model AboutContent {
+  id         Int      @id @default(autoincrement())
+  section    String
+  title      String
+  content    String?  @db.Text
+  imageUrl   String?  @map("image_url")
+  layout     String   @default("image-left")
+  orderIndex Int      @default(0) @map("order_index")
+  isActive   Boolean  @default(true) @map("is_active")
+  createdAt  DateTime @default(now()) @map("created_at")
+
+  @@map("about_content")
+}
+
+model Event {
+  id          Int      @id @default(autoincrement())
+  title       String
+  description String?  @db.Text
+  date        String?
+  location    String?
+  imageUrl    String?  @map("image_url")
+  isFeatured  Boolean  @default(false) @map("is_featured")
+  isActive    Boolean  @default(true) @map("is_active")
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  @@map("events")
+}
+
+model Leadership {
+  id         Int      @id @default(autoincrement())
+  name       String
+  position   String
+  bio        String?  @db.Text
+  imageUrl   String?  @map("image_url")
+  orderIndex Int      @default(0) @map("order_index")
+  isActive   Boolean  @default(true) @map("is_active")
+  createdAt  DateTime @default(now()) @map("created_at")
+
+  @@map("leadership")
+}
+
+model CommunityContent {
+  id         Int      @id @default(autoincrement())
+  section    String
+  title      String
+  content    String?  @db.Text
+  imageUrl   String?  @map("image_url")
+  buttonText String?  @map("button_text")
+  buttonUrl  String?  @map("button_url")
+  orderIndex Int      @default(0) @map("order_index")
+  isActive   Boolean  @default(true) @map("is_active")
+  createdAt  DateTime @default(now()) @map("created_at")
+
+  @@map("community_content")
+}
+
+model GivingOption {
+  id               Int      @id @default(autoincrement())
+  title            String
+  description      String?  @db.Text
+  suggestedAmounts String?  @map("suggested_amounts") @db.Text
+  type             String   @default("one-time")
+  isActive         Boolean  @default(true) @map("is_active")
+  createdAt        DateTime @default(now()) @map("created_at")
+
+  @@map("giving_options")
+}
+
+model Donation {
+  id            Int      @id @default(autoincrement())
+  amount        Decimal  @db.Decimal(10, 2)
+  type          String   @default("one-time")
+  status        String   @default("pending")
+  transactionId String?  @map("transaction_id")
+  donorEmail    String?  @map("donor_email")
+  donorName     String?  @map("donor_name")
+  createdAt     DateTime @default(now()) @map("created_at")
+
+  @@map("donations")
+}
+
+model ContactInfo {
+  id        Int      @id @default(autoincrement())
+  type      String
+  label     String
+  value     String
+  icon      String?
+  isActive  Boolean  @default(true) @map("is_active")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@map("contact_info")
+}
+
+model ContactMessage {
+  id        Int      @id @default(autoincrement())
+  name      String
+  email     String
+  message   String   @db.Text
+  isRead    Boolean  @default(false) @map("is_read")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@map("contact_messages")
+}
+
+model Image {
+  id           Int      @id @default(autoincrement())
+  filename     String
+  originalName String   @map("original_name")
+  filePath     String   @map("file_path")
+  fileSize     Int?     @map("file_size")
+  mimeType     String?  @map("mime_type")
+  category     String   @default("general")
+  altText      String?  @map("alt_text")
+  isActive     Boolean  @default(true) @map("is_active")
+  createdAt    DateTime @default(now()) @map("created_at")
+
+  @@map("images")
+}
+
+model FooterItem {
+  id         Int      @id @default(autoincrement())
+  section    String
+  title      String
+  content    String?  @db.Text
+  url        String?
+  icon       String?
+  orderIndex Int      @default(0) @map("order_index")
+  isActive   Boolean  @default(true) @map("is_active")
+  createdAt  DateTime @default(now()) @map("created_at")
+
+  @@map("footer_items")
+}
+
+model SeoSettings {
+  id                Int      @id @default(autoincrement())
+  siteTitle         String   @default("Battersea Chapel") @map("site_title")
+  siteDescription   String?  @map("site_description") @db.Text
+  siteKeywords      String?  @map("site_keywords") @db.Text
+  siteUrl           String   @default("http://localhost:3000") @map("site_url")
+  googleAnalyticsId String?  @map("google_analytics_id")
+  facebookUrl       String?  @map("facebook_url")
+  instagramUrl      String?  @map("instagram_url")
+  youtubeUrl        String?  @map("youtube_url")
+  twitterUrl        String?  @map("twitter_url")
+  ogImage           String?  @map("og_image")
+  contactEmail      String?  @map("contact_email")
+  contactPhone      String?  @map("contact_phone")
+  address           String?  @db.Text
+  createdAt         DateTime @default(now()) @map("created_at")
+  updatedAt         DateTime @updatedAt @map("updated_at")
+
+  @@map("seo_settings")
+}
+
+model PaypalSettings {
+  id          Int      @id @default(autoincrement())
+  email       String
+  currency    String   @default("GBP")
+  sandboxMode Boolean  @default(false) @map("sandbox_mode")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  @@map("paypal_settings")
+}

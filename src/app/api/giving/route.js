@@ -1,16 +1,16 @@
 import { NextResponse } from 'next/server';
-import { openDb } from '../../../../lib/database';
+import prisma from '../../../../lib/prisma';
 
 export async function GET() {
   try {
-    const db = await openDb();
-    const givingContent = await db.all(
-      'SELECT * FROM giving_content ORDER BY order_index ASC'
-    );
-    return NextResponse.json(givingContent);
+    const givingOptions = await prisma.givingOption.findMany({
+      orderBy: { id: 'asc' }
+    });
+    return NextResponse.json(givingOptions);
   } catch (error) {
+    console.error('Failed to fetch giving options:', error);
     return NextResponse.json(
-      { error: 'Failed to fetch giving content' },
+      { error: 'Failed to fetch giving options' },
       { status: 500 }
     );
   }
@@ -18,18 +18,23 @@ export async function GET() {
 
 export async function POST(request) {
   try {
-    const { section, title, content, image_url, button_text, button_url, order_index, is_active } = await request.json();
-    const db = await openDb();
+    const { title, description, suggestedAmounts, type, isActive } = await request.json();
     
-    const result = await db.run(
-      'INSERT INTO giving_content (section, title, content, image_url, button_text, button_url, order_index, is_active) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
-      [section, title, content, image_url, button_text, button_url, order_index || 0, is_active !== false]
-    );
+    const givingOption = await prisma.givingOption.create({
+      data: {
+        title,
+        description,
+        suggestedAmounts: suggestedAmounts ? JSON.stringify(suggested_amounts) : '[]',
+        type: type || 'one-time',
+        isActive: isActive !== false
+      }
+    });
 
-    return NextResponse.json({ id: result.lastID, message: 'Giving content created' });
+    return NextResponse.json({ id: givingOption.id, message: 'Giving option created' });
   } catch (error) {
+    console.error('Failed to create giving option:', error);
     return NextResponse.json(
-      { error: 'Failed to create giving content' },
+      { error: 'Failed to create giving option' },
       { status: 500 }
     );
   }

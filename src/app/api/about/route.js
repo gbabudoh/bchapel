@@ -1,14 +1,14 @@
 import { NextResponse } from 'next/server';
-import { openDb } from '../../../../lib/database';
+import prisma from '../../../../lib/prisma';
 
 export async function GET() {
   try {
-    const db = await openDb();
-    const aboutContent = await db.all(
-      'SELECT * FROM about_content ORDER BY order_index ASC'
-    );
+    const aboutContent = await prisma.aboutContent.findMany({
+      orderBy: { orderIndex: 'asc' }
+    });
     return NextResponse.json(aboutContent);
   } catch (error) {
+    console.error('Failed to fetch about content:', error);
     return NextResponse.json(
       { error: 'Failed to fetch about content' },
       { status: 500 }
@@ -18,16 +18,23 @@ export async function GET() {
 
 export async function POST(request) {
   try {
-    const { section, title, content, image_url, order_index, is_active } = await request.json();
-    const db = await openDb();
+    const { section, title, content, imageUrl, layout, orderIndex, isActive } = await request.json();
     
-    const result = await db.run(
-      'INSERT INTO about_content (section, title, content, image_url, order_index, is_active) VALUES (?, ?, ?, ?, ?, ?)',
-      [section, title, content, image_url, order_index || 0, is_active !== false]
-    );
+    const aboutContent = await prisma.aboutContent.create({
+      data: {
+        section,
+        title,
+        content,
+        imageUrl: imageUrl,
+        layout: layout || 'image-left',
+        orderIndex: orderIndex || 0,
+        isActive: isActive !== false
+      }
+    });
 
-    return NextResponse.json({ id: result.lastID, message: 'About content created' });
+    return NextResponse.json({ id: aboutContent.id, message: 'About content created' });
   } catch (error) {
+    console.error('Failed to create about content:', error);
     return NextResponse.json(
       { error: 'Failed to create about content' },
       { status: 500 }

@@ -1,19 +1,27 @@
 import { NextResponse } from 'next/server';
-import { openDb } from '../../../../../lib/database';
+import prisma from '../../../../../lib/prisma';
 
 export async function PUT(request, { params }) {
   try {
-    const { id } = params;
-    const { section, title, content, image_url, order_index, is_active } = await request.json();
-    const db = await openDb();
+    const { id } = await params;
+    const { section, title, content, imageUrl, layout, orderIndex, isActive } = await request.json();
     
-    await db.run(
-      'UPDATE about_content SET section = ?, title = ?, content = ?, image_url = ?, order_index = ?, is_active = ? WHERE id = ?',
-      [section, title, content, image_url, order_index, is_active, id]
-    );
+    await prisma.aboutContent.update({
+      where: { id: parseInt(id) },
+      data: {
+        section,
+        title,
+        content,
+        imageUrl: imageUrl,
+        layout,
+        orderIndex: orderIndex,
+        isActive: isActive
+      }
+    });
 
     return NextResponse.json({ message: 'About content updated' });
   } catch (error) {
+    console.error('Failed to update about content:', error);
     return NextResponse.json(
       { error: 'Failed to update about content' },
       { status: 500 }
@@ -23,13 +31,15 @@ export async function PUT(request, { params }) {
 
 export async function DELETE(request, { params }) {
   try {
-    const { id } = params;
-    const db = await openDb();
+    const { id } = await params;
     
-    await db.run('DELETE FROM about_content WHERE id = ?', [id]);
+    await prisma.aboutContent.delete({
+      where: { id: parseInt(id) }
+    });
 
     return NextResponse.json({ message: 'About content deleted' });
   } catch (error) {
+    console.error('Failed to delete about content:', error);
     return NextResponse.json(
       { error: 'Failed to delete about content' },
       { status: 500 }

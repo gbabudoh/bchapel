@@ -1,14 +1,14 @@
 import { NextResponse } from 'next/server';
-import { openDb } from '../../../../lib/database';
+import prisma from '../../../../lib/prisma';
 
 export async function GET() {
   try {
-    const db = await openDb();
-    const footerItems = await db.all(
-      'SELECT * FROM footer_items ORDER BY section ASC, order_index ASC'
-    );
+    const footerItems = await prisma.footerItem.findMany({
+      orderBy: [{ section: 'asc' }, { orderIndex: 'asc' }]
+    });
     return NextResponse.json(footerItems);
   } catch (error) {
+    console.error('Failed to fetch footer items:', error);
     return NextResponse.json(
       { error: 'Failed to fetch footer items' },
       { status: 500 }
@@ -18,16 +18,23 @@ export async function GET() {
 
 export async function POST(request) {
   try {
-    const { section, title, content, url, icon, order_index, is_active } = await request.json();
-    const db = await openDb();
+    const { section, title, content, url, icon, orderIndex, isActive } = await request.json();
     
-    const result = await db.run(
-      'INSERT INTO footer_items (section, title, content, url, icon, order_index, is_active) VALUES (?, ?, ?, ?, ?, ?, ?)',
-      [section, title, content, url, icon, order_index || 0, is_active !== false]
-    );
+    const footerItem = await prisma.footerItem.create({
+      data: {
+        section,
+        title,
+        content,
+        url,
+        icon,
+        orderIndex: orderIndex || 0,
+        isActive: isActive !== false
+      }
+    });
 
-    return NextResponse.json({ id: result.lastID, message: 'Footer item created' });
+    return NextResponse.json({ id: footerItem.id, message: 'Footer item created' });
   } catch (error) {
+    console.error('Failed to create footer item:', error);
     return NextResponse.json(
       { error: 'Failed to create footer item' },
       { status: 500 }

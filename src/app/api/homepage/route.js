@@ -1,14 +1,14 @@
 import { NextResponse } from 'next/server';
-import { openDb } from '../../../../lib/database';
+import prisma from '../../../../lib/prisma';
 
 export async function GET() {
   try {
-    const db = await openDb();
-    const content = await db.all(
-      'SELECT * FROM homepage_content ORDER BY order_index ASC'
-    );
+    const content = await prisma.homepageContent.findMany({
+      orderBy: { orderIndex: 'asc' }
+    });
     return NextResponse.json(content);
   } catch (error) {
+    console.error('Failed to fetch homepage content:', error);
     return NextResponse.json(
       { error: 'Failed to fetch homepage content' },
       { status: 500 }
@@ -18,16 +18,24 @@ export async function GET() {
 
 export async function POST(request) {
   try {
-    const { section, title, content, image_url, button_text, button_url, order_index, is_active } = await request.json();
-    const db = await openDb();
+    const { section, title, content, imageUrl, buttonText, buttonUrl, orderIndex, isActive } = await request.json();
     
-    const result = await db.run(
-      'INSERT INTO homepage_content (section, title, content, image_url, button_text, button_url, order_index, is_active) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
-      [section, title, content, image_url, button_text, button_url, order_index || 0, is_active !== false]
-    );
+    const homepageContent = await prisma.homepageContent.create({
+      data: {
+        section,
+        title,
+        content,
+        imageUrl: imageUrl,
+        buttonText: buttonText,
+        buttonUrl: buttonUrl,
+        orderIndex: orderIndex || 0,
+        isActive: isActive !== false
+      }
+    });
 
-    return NextResponse.json({ id: result.lastID, message: 'Homepage content created' });
+    return NextResponse.json({ id: homepageContent.id, message: 'Homepage content created' });
   } catch (error) {
+    console.error('Failed to create homepage content:', error);
     return NextResponse.json(
       { error: 'Failed to create homepage content' },
       { status: 500 }

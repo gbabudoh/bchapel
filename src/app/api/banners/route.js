@@ -1,14 +1,14 @@
 import { NextResponse } from 'next/server';
-import { openDb } from '../../../../lib/database';
+import prisma from '../../../../lib/prisma';
 
 export async function GET() {
   try {
-    const db = await openDb();
-    const banners = await db.all(
-      'SELECT * FROM banners ORDER BY order_index ASC'
-    );
+    const banners = await prisma.banner.findMany({
+      orderBy: { orderIndex: 'asc' }
+    });
     return NextResponse.json(banners);
   } catch (error) {
+    console.error('Failed to fetch banners:', error);
     return NextResponse.json(
       { error: 'Failed to fetch banners' },
       { status: 500 }
@@ -18,16 +18,23 @@ export async function GET() {
 
 export async function POST(request) {
   try {
-    const { title, subtitle, image_url, button_text, button_url, order_index, is_active } = await request.json();
-    const db = await openDb();
+    const { title, subtitle, imageUrl, buttonText, buttonUrl, orderIndex, isActive } = await request.json();
     
-    const result = await db.run(
-      'INSERT INTO banners (title, subtitle, image_url, button_text, button_url, order_index, is_active) VALUES (?, ?, ?, ?, ?, ?, ?)',
-      [title, subtitle, image_url, button_text, button_url, order_index || 0, is_active !== false]
-    );
+    const banner = await prisma.banner.create({
+      data: {
+        title,
+        subtitle,
+        imageUrl: imageUrl,
+        buttonText: buttonText,
+        buttonUrl: buttonUrl,
+        orderIndex: orderIndex || 0,
+        isActive: isActive !== false
+      }
+    });
 
-    return NextResponse.json({ id: result.lastID, message: 'Banner created' });
+    return NextResponse.json({ id: banner.id, message: 'Banner created' });
   } catch (error) {
+    console.error('Failed to create banner:', error);
     return NextResponse.json(
       { error: 'Failed to create banner' },
       { status: 500 }

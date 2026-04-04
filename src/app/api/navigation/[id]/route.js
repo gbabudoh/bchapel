@@ -1,19 +1,24 @@
 import { NextResponse } from 'next/server';
-import { openDb } from '../../../../../lib/database';
+import prisma from '../../../../../lib/prisma';
 
 export async function PUT(request, { params }) {
   try {
-    const { id } = params;
-    const { title, url, order_index, is_active } = await request.json();
-    const db = await openDb();
+    const { id } = await params;
+    const { title, url, orderIndex, isActive } = await request.json();
     
-    await db.run(
-      'UPDATE navigation SET title = ?, url = ?, order_index = ?, is_active = ? WHERE id = ?',
-      [title, url, order_index, is_active, id]
-    );
+    await prisma.navigation.update({
+      where: { id: parseInt(id) },
+      data: {
+        title,
+        url,
+        orderIndex: orderIndex,
+        isActive: isActive
+      }
+    });
 
     return NextResponse.json({ message: 'Navigation item updated' });
   } catch (error) {
+    console.error('Failed to update navigation item:', error);
     return NextResponse.json(
       { error: 'Failed to update navigation item' },
       { status: 500 }
@@ -23,13 +28,15 @@ export async function PUT(request, { params }) {
 
 export async function DELETE(request, { params }) {
   try {
-    const { id } = params;
-    const db = await openDb();
+    const { id } = await params;
     
-    await db.run('DELETE FROM navigation WHERE id = ?', [id]);
+    await prisma.navigation.delete({
+      where: { id: parseInt(id) }
+    });
 
     return NextResponse.json({ message: 'Navigation item deleted' });
   } catch (error) {
+    console.error('Failed to delete navigation item:', error);
     return NextResponse.json(
       { error: 'Failed to delete navigation item' },
       { status: 500 }

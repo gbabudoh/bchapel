@@ -1,19 +1,19 @@
 import { NextResponse } from 'next/server';
-import { openDb } from '../../../../../../lib/database';
+import prisma from '../../../../../../lib/prisma';
 
 export async function PUT(request, { params }) {
   try {
-    const { id } = params;
-    const { is_read } = await request.json();
-    const db = await openDb();
+    const { id } = await params;
+    const { isRead } = await request.json();
     
-    await db.run(
-      'UPDATE contact_messages SET is_read = ? WHERE id = ?',
-      [is_read, id]
-    );
+    await prisma.contactMessage.update({
+      where: { id: parseInt(id) },
+      data: { isRead: isRead }
+    });
 
     return NextResponse.json({ message: 'Message updated' });
   } catch (error) {
+    console.error('Failed to update message:', error);
     return NextResponse.json(
       { error: 'Failed to update message' },
       { status: 500 }

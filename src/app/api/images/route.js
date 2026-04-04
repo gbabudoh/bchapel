@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { openDb } from '../../../../lib/database';
+import prisma from '../../../../lib/prisma';
 
 export async function GET(request) {
   try {
@@ -7,26 +7,19 @@ export async function GET(request) {
     const category = searchParams.get('category');
     const page = parseInt(searchParams.get('page')) || 1;
     const limit = parseInt(searchParams.get('limit')) || 20;
-    const offset = (page - 1) * limit;
+    const skip = (page - 1) * limit;
 
-    const db = await openDb();
-    
-    let query = 'SELECT * FROM images';
-    let countQuery = 'SELECT COUNT(*) as total FROM images';
-    let params = [];
+    const where = category ? { category } : {};
 
-    if (category) {
-      query += ' WHERE category = ?';
-      countQuery += ' WHERE category = ?';
-      params.push(category);
-    }
-
-    query += ' ORDER BY created_at DESC LIMIT ? OFFSET ?';
-    params.push(limit, offset);
-
-    const images = await db.all(query, params);
-    const totalResult = await db.get(countQuery, category ? [category] : []);
-    const total = totalResult.total;
+    const [images, total] = await Promise.all([
+      prisma.image.findMany({
+        where,
+        orderBy: { createdAt: 'desc' },
+        take: limit,
+        skip
+      }),
+      prisma.image.count({ where })
+    ]);
 
     return NextResponse.json({
       images,
@@ -52,21 +45,22 @@ export async function DELETE(request) {
       return NextResponse.json({ error: 'Image ID required' }, { status: 400 });
     }
 
-    const db = await openDb();
-    
-    // Get image info before deleting
-    const image = await db.get('SELECT * FROM images WHERE id = ?', [id]);
+    const image = await prisma.image.findUnique({
+      where: { id: parseInt(id) }
+    });
+
     if (!image) {
       return NextResponse.json({ error: 'Image not found' }, { status: 404 });
     }
 
-    // Delete from database
-    await db.run('DELETE FROM images WHERE id = ?', [id]);
+    await prisma.image.delete({
+      where: { id: parseInt(id) }
+    });
 
     // Delete physical file
     const fs = require('fs').promises;
     const path = require('path');
-    const filePath = path.join(process.cwd(), 'public', image.file_path);
+    const filePath = path.join(process.cwd(), 'public', image.filePath);
     
     try {
       await fs.unlink(filePath);

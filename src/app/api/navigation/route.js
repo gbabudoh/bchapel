@@ -1,16 +1,16 @@
 import { NextResponse } from 'next/server';
-import { openDb } from '../../../../lib/database';
+import prisma from '../../../../lib/prisma';
 
 export async function GET() {
   try {
-    const db = await openDb();
-    const navigation = await db.all(
-      'SELECT * FROM navigation ORDER BY order_index ASC'
-    );
+    const navigation = await prisma.navigation.findMany({
+      orderBy: { orderIndex: 'asc' }
+    });
     return NextResponse.json(navigation);
   } catch (error) {
+    console.error('Navigation API error:', error);
     return NextResponse.json(
-      { error: 'Failed to fetch navigation' },
+      { error: 'Failed to fetch navigation', details: error.message },
       { status: 500 }
     );
   }
@@ -18,16 +18,20 @@ export async function GET() {
 
 export async function POST(request) {
   try {
-    const { title, url, order_index, is_active } = await request.json();
-    const db = await openDb();
+    const { title, url, orderIndex, isActive } = await request.json();
     
-    const result = await db.run(
-      'INSERT INTO navigation (title, url, order_index, is_active) VALUES (?, ?, ?, ?)',
-      [title, url, order_index || 0, is_active !== false]
-    );
+    const navItem = await prisma.navigation.create({
+      data: {
+        title,
+        url,
+        orderIndex: orderIndex || 0,
+        isActive: isActive !== false
+      }
+    });
 
-    return NextResponse.json({ id: result.lastID, message: 'Navigation item created' });
+    return NextResponse.json({ id: navItem.id, message: 'Navigation item created' });
   } catch (error) {
+    console.error('Failed to create navigation item:', error);
     return NextResponse.json(
       { error: 'Failed to create navigation item' },
       { status: 500 }

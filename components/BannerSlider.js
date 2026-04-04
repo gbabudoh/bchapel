@@ -20,25 +20,14 @@ export default function BannerSlider() {
     try {
       const response = await fetch('/api/banners');
       const data = await response.json();
-      setBanners(data.filter(banner => banner.is_active));
+      setBanners(data.filter(banner => banner.isActive));
     } catch (error) {
       console.error('Error fetching banners:', error);
     }
   };
 
   if (banners.length === 0) {
-    return (
-      <div className="relative h-96 md:h-[600px] bg-gradient-to-r from-lime-100 to-lime-50 flex items-center justify-center">
-        <div className="text-center">
-          <h1 className="text-4xl md:text-6xl font-bold text-gray-900 mb-4">
-            Welcome to Battersea Chapel
-          </h1>
-          <p className="text-xl text-gray-600">
-            A place of worship, community, and faith
-          </p>
-        </div>
-      </div>
-    );
+    return null;
   }
 
   return (
@@ -73,7 +62,7 @@ export default function BannerSlider() {
           <SwiperSlide key={banner.id}>
             <div
               className="w-full h-full bg-cover bg-center relative"
-              style={{ backgroundImage: `url(${banner.image_url})` }}
+              style={{ backgroundImage: `url(${banner.imageUrl})` }}
             >
               <div className="absolute inset-0 bg-black bg-opacity-40"></div>
               <div className="relative z-10 h-full flex items-center justify-center text-center text-white">
@@ -86,12 +75,12 @@ export default function BannerSlider() {
                       {banner.subtitle}
                     </p>
                   )}
-                  {banner.button_text && banner.button_url && (
+                  {banner.buttonText && banner.buttonUrl && (
                     <a
-                      href={banner.button_url}
+                      href={banner.buttonUrl}
                       className="bg-lime-500 hover:bg-lime-600 text-white px-8 py-4 rounded-lg font-semibold text-lg transition-colors duration-200 inline-block animate-fade-in-up animation-delay-400"
                     >
-                      {banner.button_text}
+                      {banner.buttonText}
                     </a>
                   )}
                 </div>

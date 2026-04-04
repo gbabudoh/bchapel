@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { writeFile, mkdir } from 'fs/promises';
 import { join } from 'path';
-import { openDb } from '../../../../lib/database';
+import prisma from '../../../../../lib/prisma';
 
 export async function POST(request) {
   try {
@@ -24,7 +24,7 @@ export async function POST(request) {
     }
 
     // Validate file size (5MB limit)
-    const maxSize = 5 * 1024 * 1024; // 5MB
+    const maxSize = 5 * 1024 * 1024;
     if (file.size > maxSize) {
       return NextResponse.json({ 
         error: 'File too large. Maximum size is 5MB.' 
@@ -54,41 +54,29 @@ export async function POST(request) {
     await writeFile(filepath, buffer);
 
     // Save to database
-    const db = await openDb();
-    const result = await db.run(`
-      INSERT INTO images (
-        filename, 
-        original_name, 
-        file_path, 
-        file_size, 
-        mime_type, 
-        category, 
-        title, 
-        alt_text,
-        created_at
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, datetime('now'))
-    `, [
-      filename,
-      file.name,
-      `/uploads/${category}/${filename}`,
-      file.size,
-      file.type,
-      category,
-      title,
-      alt_text
-    ]);
+    const image = await prisma.image.create({
+      data: {
+        filename,
+        originalName: file.name,
+        filePath: `/uploads/${category}/${filename}`,
+        fileSize: file.size,
+        mimeType: file.type,
+        category,
+        altText: altText
+      }
+    });
 
     return NextResponse.json({
       success: true,
       image: {
-        id: result.lastID,
+        id: image.id,
         filename,
-        file_path: `/uploads/${category}/${filename}`,
+        filePath: `/uploads/${category}/${filename}`,
         title,
-        alt_text,
+        altText,
         category,
-        file_size: file.size,
-        mime_type: file.type
+        fileSize: file.size,
+        mimeType: file.type
       }
     });
 

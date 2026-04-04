@@ -1,19 +1,26 @@
 import { NextResponse } from 'next/server';
-import { openDb } from '../../../../../lib/database';
+import prisma from '../../../../../lib/prisma';
 
 export async function PUT(request, { params }) {
   try {
-    const { id } = params;
-    const { name, position, bio, image_url, order_index, is_active } = await request.json();
-    const db = await openDb();
+    const { id } = await params;
+    const { name, position, bio, imageUrl, orderIndex, isActive } = await request.json();
     
-    await db.run(
-      'UPDATE leadership SET name = ?, position = ?, bio = ?, image_url = ?, order_index = ?, is_active = ? WHERE id = ?',
-      [name, position, bio, image_url, order_index, is_active, id]
-    );
+    await prisma.leadership.update({
+      where: { id: parseInt(id) },
+      data: {
+        name,
+        position,
+        bio,
+        imageUrl: imageUrl,
+        orderIndex: orderIndex,
+        isActive: isActive
+      }
+    });
 
     return NextResponse.json({ message: 'Leader updated' });
   } catch (error) {
+    console.error('Failed to update leader:', error);
     return NextResponse.json(
       { error: 'Failed to update leader' },
       { status: 500 }
@@ -23,13 +30,15 @@ export async function PUT(request, { params }) {
 
 export async function DELETE(request, { params }) {
   try {
-    const { id } = params;
-    const db = await openDb();
+    const { id } = await params;
     
-    await db.run('DELETE FROM leadership WHERE id = ?', [id]);
+    await prisma.leadership.delete({
+      where: { id: parseInt(id) }
+    });
 
     return NextResponse.json({ message: 'Leader deleted' });
   } catch (error) {
+    console.error('Failed to delete leader:', error);
     return NextResponse.json(
       { error: 'Failed to delete leader' },
       { status: 500 }

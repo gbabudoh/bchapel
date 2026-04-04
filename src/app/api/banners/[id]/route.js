@@ -1,19 +1,27 @@
 import { NextResponse } from 'next/server';
-import { openDb } from '../../../../../lib/database';
+import prisma from '../../../../../lib/prisma';
 
 export async function PUT(request, { params }) {
   try {
-    const { id } = params;
-    const { title, subtitle, image_url, button_text, button_url, order_index, is_active } = await request.json();
-    const db = await openDb();
+    const { id } = await params;
+    const { title, subtitle, imageUrl, buttonText, buttonUrl, orderIndex, isActive } = await request.json();
     
-    await db.run(
-      'UPDATE banners SET title = ?, subtitle = ?, image_url = ?, button_text = ?, button_url = ?, order_index = ?, is_active = ? WHERE id = ?',
-      [title, subtitle, image_url, button_text, button_url, order_index, is_active, id]
-    );
+    await prisma.banner.update({
+      where: { id: parseInt(id) },
+      data: {
+        title,
+        subtitle,
+        imageUrl: imageUrl,
+        buttonText: buttonText,
+        buttonUrl: buttonUrl,
+        orderIndex: orderIndex,
+        isActive: isActive
+      }
+    });
 
     return NextResponse.json({ message: 'Banner updated' });
   } catch (error) {
+    console.error('Failed to update banner:', error);
     return NextResponse.json(
       { error: 'Failed to update banner' },
       { status: 500 }
@@ -23,13 +31,15 @@ export async function PUT(request, { params }) {
 
 export async function DELETE(request, { params }) {
   try {
-    const { id } = params;
-    const db = await openDb();
+    const { id } = await params;
     
-    await db.run('DELETE FROM banners WHERE id = ?', [id]);
+    await prisma.banner.delete({
+      where: { id: parseInt(id) }
+    });
 
     return NextResponse.json({ message: 'Banner deleted' });
   } catch (error) {
+    console.error('Failed to delete banner:', error);
     return NextResponse.json(
       { error: 'Failed to delete banner' },
       { status: 500 }

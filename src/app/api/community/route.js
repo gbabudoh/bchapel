@@ -1,14 +1,14 @@
 import { NextResponse } from 'next/server';
-import { openDb } from '../../../../lib/database';
+import prisma from '../../../../lib/prisma';
 
 export async function GET() {
   try {
-    const db = await openDb();
-    const communityContent = await db.all(
-      'SELECT * FROM community_content ORDER BY order_index ASC'
-    );
+    const communityContent = await prisma.communityContent.findMany({
+      orderBy: { orderIndex: 'asc' }
+    });
     return NextResponse.json(communityContent);
   } catch (error) {
+    console.error('Failed to fetch community content:', error);
     return NextResponse.json(
       { error: 'Failed to fetch community content' },
       { status: 500 }
@@ -18,16 +18,24 @@ export async function GET() {
 
 export async function POST(request) {
   try {
-    const { section, title, content, image_url, button_text, button_url, order_index, is_active } = await request.json();
-    const db = await openDb();
+    const { section, title, content, imageUrl, buttonText, buttonUrl, orderIndex, isActive } = await request.json();
     
-    const result = await db.run(
-      'INSERT INTO community_content (section, title, content, image_url, button_text, button_url, order_index, is_active) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
-      [section, title, content, image_url, button_text, button_url, order_index || 0, is_active !== false]
-    );
+    const communityContent = await prisma.communityContent.create({
+      data: {
+        section,
+        title,
+        content,
+        imageUrl: imageUrl,
+        buttonText: buttonText,
+        buttonUrl: buttonUrl,
+        orderIndex: orderIndex || 0,
+        isActive: isActive !== false
+      }
+    });
 
-    return NextResponse.json({ id: result.lastID, message: 'Community content created' });
+    return NextResponse.json({ id: communityContent.id, message: 'Community content created' });
   } catch (error) {
+    console.error('Failed to create community content:', error);
     return NextResponse.json(
       { error: 'Failed to create community content' },
       { status: 500 }
