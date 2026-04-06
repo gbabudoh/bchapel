@@ -68,7 +68,7 @@ export default function BannerSlider() {
                 className="w-full block object-cover object-center h-[320px] sm:h-[450px] md:h-[600px]"
               />
               <div className="absolute inset-0 bg-black bg-opacity-40"></div>
-              <div className="absolute inset-0 flex items-end justify-center text-center text-white px-5 pb-8 sm:pb-12 md:items-center md:pb-0">
+              <div className="absolute inset-0 flex items-end justify-center text-center text-white px-5 pb-10 sm:pb-14 md:pb-20">
                 <div className="max-w-4xl mx-auto">
                   <h1 className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-3 md:mb-6 leading-tight animate-fade-in-up">
                     {banner.title}
