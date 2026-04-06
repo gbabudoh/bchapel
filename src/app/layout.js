@@ -1,5 +1,6 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import ClientProviders from "../../components/ClientProviders";
+import MobileBottomNav from "../../components/MobileBottomNav";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -76,11 +77,24 @@ export const metadata = {
     },
   },
   icons: {
-    icon: '/favicon.png',
-    shortcut: '/favicon.png',
-    apple: '/favicon.png',
+    icon: [
+      { url: '/icons/icon-192x192.png', sizes: '192x192', type: 'image/png' },
+      { url: '/icons/icon-512x512.png', sizes: '512x512', type: 'image/png' },
+    ],
+    shortcut: '/icons/icon-192x192.png',
+    apple: [
+      { url: '/icons/icon-180x180.png', sizes: '180x180', type: 'image/png' },
+      { url: '/icons/icon-152x152.png', sizes: '152x152', type: 'image/png' },
+      { url: '/icons/icon-144x144.png', sizes: '144x144', type: 'image/png' },
+      { url: '/icons/icon-120x120.png', sizes: '120x120', type: 'image/png' },
+    ],
   },
   manifest: '/manifest.json',
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: 'default',
+    title: 'Battersea Chapel',
+  },
 };
 
 export default function RootLayout({ children }) {
@@ -89,15 +103,28 @@ export default function RootLayout({ children }) {
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
         <meta name="theme-color" content="#65a30d" />
+        <meta name="mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+        <meta name="apple-mobile-web-app-title" content="Battersea Chapel" />
+        <link rel="apple-touch-icon" sizes="180x180" href="/icons/icon-180x180.png" />
+        <link rel="apple-touch-icon" sizes="152x152" href="/icons/icon-152x152.png" />
+        <link rel="apple-touch-icon" sizes="144x144" href="/icons/icon-144x144.png" />
+        <link rel="apple-touch-icon" sizes="128x128" href="/icons/icon-128x128.png" />
+        <link rel="apple-touch-icon" sizes="96x96" href="/icons/icon-96x96.png" />
+        <link rel="apple-touch-icon" href="/icons/icon-180x180.png" />
         <link rel="canonical" href={process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'} />
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-white text-gray-900`}
       >
         <ClientProviders>
-          {children}
+          <div className="pb-16 md:pb-0">
+            {children}
+          </div>
+          <MobileBottomNav />
         </ClientProviders>
       </body>
     </html>

@@ -96,21 +96,21 @@ export default function AdminPage() {
     <AdminPageLayout title="Dashboard" description={today}>
 
       {/* Welcome banner */}
-      <div className="bg-gray-900 rounded-2xl p-7 mb-8 flex items-center justify-between relative overflow-hidden">
+      <div className="bg-gray-900 rounded-2xl p-5 md:p-7 mb-6 md:mb-8 flex items-center justify-between relative overflow-hidden gap-4">
         <div className="absolute -top-8 -right-8 w-48 h-48 bg-lime-500 opacity-5 rounded-full pointer-events-none"></div>
         <div className="absolute -bottom-8 right-32 w-32 h-32 bg-lime-500 opacity-5 rounded-full pointer-events-none"></div>
-        <div>
+        <div className="min-w-0">
           <p className="text-lime-400 text-xs font-semibold uppercase tracking-widest mb-1">Welcome back</p>
-          <h2 className="text-2xl font-bold text-white mb-1">{session.user.username}</h2>
-          <p className="text-gray-400 text-sm">Here's what's going on with your site today.</p>
+          <h2 className="text-lg md:text-2xl font-bold text-white mb-1 truncate">{session.user.username}</h2>
+          <p className="text-gray-400 text-xs md:text-sm hidden sm:block">Here's what's going on with your site today.</p>
         </div>
         <Link
           href="/"
           target="_blank"
-          className="flex-shrink-0 flex items-center gap-2 bg-lime-500 hover:bg-lime-600 text-white px-5 py-2.5 rounded-xl text-sm font-semibold transition-colors duration-200"
+          className="flex-shrink-0 flex items-center gap-2 bg-lime-500 hover:bg-lime-600 text-white px-3 py-2 md:px-5 md:py-2.5 rounded-xl text-xs md:text-sm font-semibold transition-colors duration-200"
         >
           View Site
-          <ArrowRight size={16} />
+          <ArrowRight size={14} />
         </Link>
       </div>
 

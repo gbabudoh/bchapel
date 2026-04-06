@@ -3,11 +3,10 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
-import { Menu, X, Heart } from 'lucide-react';
+import { Heart } from 'lucide-react';
 
 export default function Navigation() {
   const [navItems, setNavItems] = useState([]);
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const pathname = usePathname();
 
@@ -84,50 +83,7 @@ export default function Navigation() {
               Give
             </Link>
           </div>
-
-          {/* Mobile menu button */}
-          <div className="md:hidden flex items-center gap-3">
-            <Link
-              href="/giving"
-              className="inline-flex items-center gap-1 bg-lime-500 hover:bg-lime-600 text-white px-3 py-1.5 rounded-lg text-sm font-semibold transition-colors duration-200"
-            >
-              <Heart size={14} />
-              Give
-            </Link>
-            <button
-              onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="text-gray-700 hover:text-lime-600 p-2"
-              aria-label="Toggle menu"
-            >
-              {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
-            </button>
-          </div>
         </div>
-
-        {/* Mobile Navigation */}
-        {isMenuOpen && (
-          <div className="md:hidden border-t border-gray-100">
-            <div className="px-2 pt-2 pb-3 space-y-1">
-              {navItems.map((item) => {
-                const isActive = pathname === item.url;
-                return (
-                  <Link
-                    key={item.id}
-                    href={item.url}
-                    className={`block px-4 py-2.5 rounded-lg text-base font-medium transition-colors duration-200 ${
-                      isActive
-                        ? 'text-lime-600 bg-lime-50 border-l-4 border-lime-500'
-                        : 'text-gray-700 hover:text-lime-600 hover:bg-gray-50'
-                    }`}
-                    onClick={() => setIsMenuOpen(false)}
-                  >
-                    {item.title}
-                  </Link>
-                );
-              })}
-            </div>
-          </div>
-        )}
       </div>
     </nav>
   );

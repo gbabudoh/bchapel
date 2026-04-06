@@ -57,12 +57,12 @@ export default function Footer() {
 
   return (
     <footer className="bg-gray-900 text-white">
-      <div className="max-w-6xl mx-auto px-8 py-20">
-        <div className="grid grid-cols-1 md:grid-cols-[1fr_1fr_1fr] gap-12 md:gap-x-16 md:gap-y-20">
-          
-          {/* Battersea Chapel Section */}
-          <div className="flex flex-col items-center text-center">
-            <div className="flex items-center mb-8">
+      <div className="max-w-6xl mx-auto px-4 sm:px-8 py-10 md:py-20">
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-8 md:gap-x-16 md:gap-y-20">
+
+          {/* Battersea Chapel Section — full width on mobile */}
+          <div className="col-span-2 md:col-span-1 flex flex-col items-start md:items-center md:text-center">
+            <div className="flex items-center mb-4 md:mb-8">
               <Image
                 src="/logo.png"
                 alt="Battersea Chapel Logo"
@@ -76,7 +76,7 @@ export default function Footer() {
               </div>
             </div>
             
-            <p className="text-gray-300 mb-8 leading-relaxed max-w-xs text-left">
+            <p className="text-gray-300 mb-5 md:mb-8 text-sm md:text-base leading-relaxed max-w-xs">
               A place where faith meets community, and hearts find their home in Christ. 
               Join us as we grow together in love, service, and spiritual understanding.
             </p>
@@ -116,21 +116,21 @@ export default function Footer() {
           </div>
 
           {/* Links Section - Middle */}
-          <div className="flex flex-col items-center text-center">
-            <h3 className="text-2xl font-bold mb-10 text-lime-400">
+          <div className="flex flex-col items-start md:items-center">
+            <h3 className="text-base md:text-2xl font-bold mb-4 md:mb-10 text-lime-400">
               Links
             </h3>
-            
-            <div className="space-y-8 w-fit text-left">
+
+            <div className="space-y-3 md:space-y-8 w-fit text-left">
               {/* Navigation Links */}
               {groupedItems.links && (
                 <div>
-                  <ul className="space-y-5">
+                  <ul className="space-y-3 md:space-y-4">
                     {groupedItems.links.map((item) => (
                       <li key={item.id}>
                         <a
                           href={item.url}
-                          className="text-gray-300 hover:text-lime-400 transition-colors duration-200 flex items-center justify-start text-lg"
+                          className="text-gray-300 hover:text-lime-400 transition-colors duration-200 flex items-center justify-start text-sm md:text-lg"
                         >
                           {item.icon && (
                             <span className="mr-3">{getIcon(item.icon)}</span>
@@ -181,19 +181,19 @@ export default function Footer() {
           </div>
 
           {/* Social Media Section - Far Right */}
-          <div className="flex flex-col items-center text-center">
-            <h3 className="text-2xl font-bold mb-10 text-lime-400">
+          <div className="flex flex-col items-start md:items-center">
+            <h3 className="text-base md:text-2xl font-bold mb-4 md:mb-10 text-lime-400">
               Social
             </h3>
 
             {/* Social Media Links */}
             {groupedItems.social && (
-              <div className="space-y-5 w-fit text-left">
+              <div className="space-y-3 md:space-y-4 w-fit text-left">
                 {groupedItems.social.map((item) => (
                   <a
                     key={item.id}
                     href={item.url}
-                    className="text-gray-300 hover:text-lime-400 transition-colors duration-200 flex items-center justify-start text-lg"
+                    className="text-gray-300 hover:text-lime-400 transition-colors duration-200 flex items-center justify-start text-sm md:text-lg"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
@@ -209,7 +209,7 @@ export default function Footer() {
         </div>
 
         {/* Bottom Section */}
-        <div className="border-t border-gray-700 mt-16 pt-8">
+        <div className="border-t border-gray-700 mt-8 md:mt-16 pt-6 md:pt-8">
           <div className="flex flex-col md:flex-row justify-between items-center">
             <div className="text-gray-400 text-sm mb-4 md:mb-0">
               © {new Date().getFullYear()} Battersea Chapel. All rights reserved.

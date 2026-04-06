@@ -33,7 +33,7 @@ export default function BannerSlider() {
   }
 
   return (
-    <div className="relative h-96 md:h-[600px] banner-slider">
+    <div className="relative banner-slider overflow-hidden">
       <Swiper
         modules={[Navigation, Pagination, Autoplay, EffectFade]}
         spaceBetween={0}
@@ -58,29 +58,30 @@ export default function BannerSlider() {
           crossFade: true,
         }}
         loop={banners.length > 1}
-        className="h-full"
       >
         {banners.map((banner) => (
           <SwiperSlide key={banner.id}>
-            <div
-              className="w-full h-full bg-cover bg-center relative"
-              style={{ backgroundImage: `url(${banner.imageUrl})` }}
-            >
+            <div className="relative w-full">
+              <img
+                src={banner.imageUrl}
+                alt={banner.title}
+                className="w-full block object-cover object-center h-[320px] sm:h-[450px] md:h-auto md:max-h-[85vh]"
+              />
               <div className="absolute inset-0 bg-black bg-opacity-40"></div>
-              <div className="relative z-10 h-full flex items-center justify-center text-center text-white">
-                <div className="max-w-4xl mx-auto px-4">
-                  <h1 className="text-4xl md:text-6xl font-bold mb-6 animate-fade-in-up">
+              <div className="absolute inset-0 flex items-end justify-center text-center text-white px-5 pb-8 sm:pb-12 md:items-center md:pb-0">
+                <div className="max-w-4xl mx-auto">
+                  <h1 className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-3 md:mb-6 leading-tight animate-fade-in-up">
                     {banner.title}
                   </h1>
                   {banner.subtitle && (
-                    <p className="text-xl md:text-2xl mb-8 opacity-90 animate-fade-in-up animation-delay-200">
+                    <p className="text-sm sm:text-lg md:text-xl lg:text-2xl mb-5 md:mb-8 opacity-90 animate-fade-in-up animation-delay-200">
                       {banner.subtitle}
                     </p>
                   )}
                   {banner.buttonText && banner.buttonUrl && (
                     <button
                       onClick={(e) => { e.stopPropagation(); window.location.href = banner.buttonUrl; }}
-                      className="bg-lime-500 hover:bg-lime-600 text-white px-8 py-4 rounded-lg font-semibold text-lg transition-colors duration-200 inline-block animate-fade-in-up animation-delay-400"
+                      className="bg-lime-500 hover:bg-lime-600 text-white px-6 py-3 md:px-8 md:py-4 rounded-lg font-semibold text-sm sm:text-base md:text-lg transition-colors duration-200 inline-block animate-fade-in-up animation-delay-400"
                     >
                       {banner.buttonText}
                     </button>
@@ -95,13 +96,13 @@ export default function BannerSlider() {
       {/* Custom Navigation Buttons */}
       {banners.length > 1 && (
         <>
-          <button className="swiper-button-prev-custom absolute left-4 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-20 hover:bg-opacity-30 text-white p-3 rounded-full transition-all duration-200 z-10 group">
-            <svg className="w-6 h-6 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <button className="swiper-button-prev-custom absolute left-3 md:left-4 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-20 hover:bg-opacity-30 text-white p-2 md:p-3 rounded-full transition-all duration-200 z-10 group flex items-center justify-center">
+            <svg className="w-4 h-4 md:w-6 md:h-6 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
             </svg>
           </button>
-          <button className="swiper-button-next-custom absolute right-4 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-20 hover:bg-opacity-30 text-white p-3 rounded-full transition-all duration-200 z-10 group">
-            <svg className="w-6 h-6 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <button className="swiper-button-next-custom absolute right-3 md:right-4 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-20 hover:bg-opacity-30 text-white p-2 md:p-3 rounded-full transition-all duration-200 z-10 group flex items-center justify-center">
+            <svg className="w-4 h-4 md:w-6 md:h-6 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
             </svg>
           </button>

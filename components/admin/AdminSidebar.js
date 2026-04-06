@@ -18,6 +18,7 @@ import {
   BarChart3,
   LogOut,
   ChevronRight,
+  X,
 } from 'lucide-react';
 
 const navGroups = [
@@ -56,7 +57,7 @@ const navGroups = [
   },
 ];
 
-export default function AdminSidebar() {
+export default function AdminSidebar({ isOpen, onClose }) {
   const pathname = usePathname();
   const { data: session } = useSession();
 
@@ -65,22 +66,36 @@ export default function AdminSidebar() {
     : 'AD';
 
   return (
-    <div className="fixed left-0 top-0 h-full w-64 bg-gray-900 flex flex-col z-40">
-
-      {/* Logo */}
-      <div className="flex items-center gap-3 px-5 py-5 border-b border-gray-800">
-        <div className="relative w-9 h-9 flex-shrink-0">
-          <Image
-            src="/logo.png"
-            alt="Battersea Chapel"
-            fill
-            className="object-contain"
-          />
+    <div
+      className={`fixed left-0 top-0 h-full w-64 bg-gray-900 flex flex-col z-40
+        transform transition-transform duration-300 ease-in-out
+        ${isOpen ? 'translate-x-0' : '-translate-x-full'}
+        md:translate-x-0`}
+    >
+      {/* Logo + mobile close button */}
+      <div className="flex items-center justify-between gap-3 px-5 py-5 border-b border-gray-800">
+        <div className="flex items-center gap-3 min-w-0">
+          <div className="relative w-9 h-9 flex-shrink-0">
+            <Image
+              src="/logo.png"
+              alt="Battersea Chapel"
+              fill
+              className="object-contain"
+            />
+          </div>
+          <div className="leading-tight min-w-0">
+            <p className="text-white font-bold text-sm truncate">Battersea Chapel</p>
+            <p className="text-lime-400 text-xs font-medium">Admin Panel</p>
+          </div>
         </div>
-        <div className="leading-tight">
-          <p className="text-white font-bold text-sm">Battersea Chapel</p>
-          <p className="text-lime-400 text-xs font-medium">Admin Panel</p>
-        </div>
+        {/* Close button — mobile only */}
+        <button
+          className="md:hidden flex-shrink-0 p-1.5 rounded-lg text-gray-400 hover:text-white hover:bg-gray-800 transition-colors"
+          onClick={onClose}
+          aria-label="Close menu"
+        >
+          <X size={18} />
+        </button>
       </div>
 
       {/* Navigation */}
@@ -98,6 +113,7 @@ export default function AdminSidebar() {
                   <li key={item.href}>
                     <Link
                       href={item.href}
+                      onClick={onClose}
                       className={`flex items-center justify-between px-3 py-2 rounded-lg text-sm font-medium transition-colors duration-150 group ${
                         isActive
                           ? 'bg-lime-500/10 text-lime-400 border border-lime-500/20'
