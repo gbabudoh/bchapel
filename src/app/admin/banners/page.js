@@ -209,8 +209,8 @@ export default function BannersAdmin() {
                 <input
                   type="number"
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-lime-500 focus:border-transparent"
-                  value={formData.orderIndex}
-                  onChange={(e) => setFormData({ ...formData, orderIndex: parseInt(e.target.value) })}
+                  value={formData.orderIndex ?? ''}
+                  onChange={(e) => setFormData({ ...formData, orderIndex: e.target.value === '' ? '' : parseInt(e.target.value) })}
                 />
               </div>
               <div className="flex items-center pt-6">

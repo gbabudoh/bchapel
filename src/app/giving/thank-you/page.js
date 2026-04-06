@@ -19,7 +19,7 @@ function ThankYouContent() {
     setDonationDetails({ type, amount });
   }, [searchParams]);
 
-  const shareMessage = `I just made a donation to Battersea Chapel! Join me in supporting their ministry. ${window.location.origin}`;
+  const shareMessage = `I just made a donation to Battersea Chapel! Join me in supporting their ministry. ${typeof window !== 'undefined' ? window.location.origin : ''}`;
 
   const handleShare = async () => {
     if (navigator.share) {

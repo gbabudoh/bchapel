@@ -1,5 +1,6 @@
 'use client';
 import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination, Autoplay, EffectFade } from 'swiper/modules';
 
@@ -11,6 +12,7 @@ import 'swiper/css/effect-fade';
 
 export default function BannerSlider() {
   const [banners, setBanners] = useState([]);
+  const router = useRouter();
 
   useEffect(() => {
     fetchBanners();
@@ -76,12 +78,12 @@ export default function BannerSlider() {
                     </p>
                   )}
                   {banner.buttonText && banner.buttonUrl && (
-                    <a
-                      href={banner.buttonUrl}
+                    <button
+                      onClick={(e) => { e.stopPropagation(); window.location.href = banner.buttonUrl; }}
                       className="bg-lime-500 hover:bg-lime-600 text-white px-8 py-4 rounded-lg font-semibold text-lg transition-colors duration-200 inline-block animate-fade-in-up animation-delay-400"
                     >
                       {banner.buttonText}
-                    </a>
+                    </button>
                   )}
                 </div>
               </div>

@@ -165,11 +165,11 @@ export default function CommunityPage() {
                     className="bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden border border-gray-100 border-t-4 border-t-lime-500 flex flex-col"
                   >
                     {program.imageUrl && (
-                      <div className="h-48 overflow-hidden">
+                      <div className="relative h-48 overflow-hidden">
                         <img
                           src={program.imageUrl}
                           alt={program.title}
-                          className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                          className="absolute inset-0 w-full h-full object-cover hover:scale-105 transition-transform duration-300"
                         />
                       </div>
                     )}
@@ -263,24 +263,26 @@ export default function CommunityPage() {
                 {groupedContent.involvement.map((item) => (
                   <div
                     key={item.id}
-                    className="bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 p-8 text-center border-t-4 border-lime-500 hover:-translate-y-1"
+                    className="bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden border-t-4 border-lime-500 hover:-translate-y-1 flex flex-col"
                   >
                     {item.imageUrl && (
-                      <div className="w-14 h-14 bg-lime-50 rounded-full flex items-center justify-center mx-auto mb-6">
-                        <img src={item.imageUrl} alt={item.title} className="w-8 h-8 object-contain" />
+                      <div className="relative h-48 overflow-hidden">
+                        <img src={item.imageUrl} alt={item.title} className="absolute inset-0 w-full h-full object-cover" />
                       </div>
                     )}
-                    <h3 className="text-xl font-semibold text-gray-900 mb-4">{item.title}</h3>
-                    <p className="text-gray-500 mb-7 leading-relaxed">{item.content}</p>
-                    {item.buttonText && item.buttonUrl && (
-                      <a
-                        href={item.buttonUrl}
-                        className="inline-flex items-center bg-lime-500 text-white px-6 py-3 rounded-xl hover:bg-lime-600 transition-colors duration-200 font-semibold"
-                      >
-                        {item.buttonText}
-                        <ArrowRight className="ml-2" size={16} />
-                      </a>
-                    )}
+                    <div className="p-8 text-left flex flex-col flex-1">
+                      <h3 className="text-xl font-semibold text-gray-900 mb-4">{item.title}</h3>
+                      <p className="text-gray-500 mb-7 leading-relaxed flex-1">{item.content}</p>
+                      {item.buttonText && item.buttonUrl && (
+                        <a
+                          href={item.buttonUrl}
+                          className="inline-flex items-center bg-lime-500 text-white px-6 py-3 rounded-xl hover:bg-lime-600 transition-colors duration-200 font-semibold"
+                        >
+                          {item.buttonText}
+                          <ArrowRight className="ml-2" size={16} />
+                        </a>
+                      )}
+                    </div>
                   </div>
                 ))}
               </div>
