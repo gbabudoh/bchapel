@@ -65,7 +65,7 @@ export default function BannerSlider() {
               <img
                 src={banner.imageUrl}
                 alt={banner.title}
-                className="w-full block object-cover object-center h-[320px] sm:h-[450px] md:h-auto md:max-h-[85vh]"
+                className="w-full block object-cover object-center h-[320px] sm:h-[450px] md:h-[600px]"
               />
               <div className="absolute inset-0 bg-black bg-opacity-40"></div>
               <div className="absolute inset-0 flex items-end justify-center text-center text-white px-5 pb-8 sm:pb-12 md:items-center md:pb-0">
