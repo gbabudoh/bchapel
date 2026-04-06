@@ -45,46 +45,43 @@ export default function HomepageAdmin() {
     }
   };
 
+  const resetForm = () => {
+    setFormData({ section: '', title: '', content: '', imageUrl: '', buttonText: '', buttonUrl: '', orderIndex: 0, isActive: true });
+    setEditingItem(null);
+    setShowAddForm(false);
+  };
+
+  const handleEdit = (item) => {
+    setEditingItem(item);
+    setFormData({
+      section: item.section || '',
+      title: item.title || '',
+      content: item.content || '',
+      imageUrl: item.imageUrl || '',
+      buttonText: item.buttonText || '',
+      buttonUrl: item.buttonUrl || '',
+      orderIndex: item.orderIndex || 0,
+      isActive: item.isActive !== false,
+    });
+    setShowAddForm(true);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch('/api/homepage', {
-        method: 'POST',
+      const url = editingItem ? `/api/homepage/${editingItem.id}` : '/api/homepage';
+      const method = editingItem ? 'PUT' : 'POST';
+      const response = await fetch(url, {
+        method,
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
       });
       if (response.ok) {
         fetchContent();
-        setShowAddForm(false);
-        setFormData({
-          section: '',
-          title: '',
-          content: '',
-          imageUrl: '',
-          buttonText: '',
-          buttonUrl: '',
-          orderIndex: 0,
-          isActive: true
-        });
+        resetForm();
       }
     } catch (error) {
-      console.error('Error creating homepage content:', error);
-    }
-  };
-
-  const handleUpdate = async (id, updatedData) => {
-    try {
-      const response = await fetch(`/api/homepage/${id}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(updatedData),
-      });
-      if (response.ok) {
-        fetchContent();
-        setEditingItem(null);
-      }
-    } catch (error) {
-      console.error('Error updating homepage content:', error);
+      console.error('Error saving homepage content:', error);
     }
   };
 
@@ -129,7 +126,7 @@ export default function HomepageAdmin() {
     >
       {showAddForm && (
         <div className="bg-white rounded-lg shadow-md p-6 mb-6">
-          <h2 className="text-xl font-semibold mb-4">Add New Content Section</h2>
+          <h2 className="text-xl font-semibold mb-4">{editingItem ? 'Edit Content Section' : 'Add New Content Section'}</h2>
           <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">Section</label>
@@ -218,11 +215,11 @@ export default function HomepageAdmin() {
                 className="bg-lime-500 text-white px-4 py-2 rounded-lg hover:bg-lime-600 flex items-center gap-2"
               >
                 <Save size={16} />
-                Save
+                {editingItem ? 'Update' : 'Save'}
               </button>
               <button
                 type="button"
-                onClick={() => setShowAddForm(false)}
+                onClick={resetForm}
                 className="bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600 flex items-center gap-2"
               >
                 <X size={16} />
@@ -275,7 +272,7 @@ export default function HomepageAdmin() {
                 </div>
                 <div className="flex space-x-2 ml-4">
                   <button
-                    onClick={() => setEditingItem(editingItem === item.id ? null : item.id)}
+                    onClick={() => handleEdit(item)}
                     className="text-lime-600 hover:text-lime-800 p-2"
                   >
                     <Edit size={16} />
