@@ -122,7 +122,7 @@ export default function EventsPage() {
         <div className="absolute -bottom-32 -left-32 w-96 h-96 bg-lime-500 opacity-5 rounded-full pointer-events-none"></div>
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <p className="text-lime-400 font-semibold uppercase tracking-widest text-xs mb-4">
-            What's Happening
+            What&apos;s Happening
           </p>
           <h1 className="text-5xl md:text-6xl font-bold mb-5">Church Events</h1>
           <div className="w-16 h-1 bg-lime-500 mx-auto rounded-full mb-6"></div>
@@ -139,7 +139,7 @@ export default function EventsPage() {
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
               <div className="text-center mb-16">
                 <p className="text-lime-600 font-semibold uppercase tracking-widest text-xs mb-3">
-                  Don't Miss Out
+                  Don&apos;t Miss Out
                 </p>
                 <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-5">Upcoming Events</h2>
                 <div className="w-16 h-1 bg-lime-500 mx-auto rounded-full"></div>

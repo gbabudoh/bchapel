@@ -154,7 +154,7 @@ export default function GivingPage() {
           <h1 className="text-5xl md:text-6xl font-bold mb-5">Support Our Mission</h1>
           <div className="w-16 h-1 bg-lime-500 mx-auto rounded-full mb-6"></div>
           <p className="text-gray-400 text-xl max-w-2xl mx-auto leading-relaxed mb-8">
-            Your generosity helps us serve our community and spread God's love
+            Your generosity helps us serve our community and spread God&apos;s love
           </p>
           <div className="flex justify-center items-center gap-6 text-sm text-gray-500">
             <div className="flex items-center gap-1.5">
@@ -248,7 +248,7 @@ export default function GivingPage() {
                 <div className="grid md:grid-cols-2 gap-8">
                   <div>
                     <p className="text-gray-600 leading-relaxed mb-4">
-                      Giving is an act of worship and a way to participate in God's work in our community.
+                      Giving is an act of worship and a way to participate in God&apos;s work in our community.
                       Your contributions help us maintain our facilities, support our ministries,
                       reach out to those in need, and spread the Gospel.
                     </p>
@@ -284,7 +284,7 @@ export default function GivingPage() {
                 </div>
                 <p className="text-gray-500 text-sm leading-relaxed">
                   All donations are processed securely through PayPal. We never store your payment information.
-                  You'll receive a confirmation email for your records, and donations may be tax-deductible.
+                  You&apos;ll receive a confirmation email for your records, and donations may be tax-deductible.
                 </p>
               </div>
 

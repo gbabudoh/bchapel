@@ -95,7 +95,7 @@ export default function ContactPage() {
         <div className="absolute -bottom-32 -left-32 w-96 h-96 bg-lime-500 opacity-5 rounded-full pointer-events-none"></div>
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <p className="text-lime-400 font-semibold uppercase tracking-widest text-xs mb-4">
-            We'd Love to Hear From You
+            We&apos;d Love to Hear From You
           </p>
           <h1 className="text-5xl md:text-6xl font-bold mb-5">Contact Us</h1>
           <div className="w-16 h-1 bg-lime-500 mx-auto rounded-full mb-6"></div>
@@ -163,7 +163,7 @@ export default function ContactPage() {
             <div>
               <div className="mb-8">
                 <p className="text-lime-600 font-semibold uppercase tracking-widest text-xs mb-2">Send a Message</p>
-                <h2 className="text-3xl font-bold text-gray-900">We're Here to Help</h2>
+                <h2 className="text-3xl font-bold text-gray-900">We&apos;re Here to Help</h2>
               </div>
 
               {formStatus.message && (

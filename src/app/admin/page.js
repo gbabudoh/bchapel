@@ -102,7 +102,7 @@ export default function AdminPage() {
         <div className="min-w-0">
           <p className="text-lime-400 text-xs font-semibold uppercase tracking-widest mb-1">Welcome back</p>
           <h2 className="text-lg md:text-2xl font-bold text-white mb-1 truncate">{session.user.username}</h2>
-          <p className="text-gray-400 text-xs md:text-sm hidden sm:block">Here's what's going on with your site today.</p>
+          <p className="text-gray-400 text-xs md:text-sm hidden sm:block">Here&apos;s what&apos;s going on with your site today.</p>
         </div>
         <Link
           href="/"
