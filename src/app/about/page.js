@@ -69,7 +69,13 @@ export default function AboutPage() {
         )}
         <div className={item.imageUrl ? 'w-full lg:w-1/2' : 'max-w-3xl mx-auto'}>
           <h3 className="text-2xl md:text-3xl font-semibold text-gray-900 mb-5">{item.title}</h3>
-          <p className="text-gray-600 text-lg leading-relaxed whitespace-pre-wrap">{item.content}</p>
+          <div className="text-gray-600 text-lg leading-relaxed space-y-2">
+            {item.content?.split('\n\n').map((para, i) => (
+              <p key={i}>{para.split('\n').map((line, j, arr) => (
+                <span key={j}>{line}{j < arr.length - 1 && <br />}</span>
+              ))}</p>
+            ))}
+          </div>
         </div>
       </div>
     );

@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { signIn, getSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { Eye, EyeOff, Lock, User } from 'lucide-react';
+import Image from 'next/image';
 
 export default function AdminLogin() {
   const [credentials, setCredentials] = useState({ username: '', password: '' });
@@ -41,9 +42,13 @@ export default function AdminLogin() {
         <div className="bg-white rounded-2xl shadow-xl p-8">
           {/* Logo */}
           <div className="text-center mb-8">
-            <div className="w-16 h-16 bg-lime-500 rounded-full flex items-center justify-center mx-auto mb-4">
-              <span className="text-white font-bold text-2xl">BC</span>
-            </div>
+            <Image
+              src="/logo.png"
+              alt="Battersea Chapel Logo"
+              width={72}
+              height={72}
+              className="object-contain mx-auto mb-4"
+            />
             <h1 className="text-2xl font-bold text-gray-900">Admin Login</h1>
             <p className="text-gray-600 mt-2">Battersea Chapel</p>
           </div>
